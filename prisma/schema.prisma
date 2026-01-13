@@ -13,3 +13,34 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id                 String      @id @default(cuid())
+  clerkId            String      @unique
+  email              String      @unique
+  firstName          String?
+  lastName           String?
+  imageUrl           String?
+
+  // Onboarding data (migrado de Clerk metadata)
+  companyName        String?
+  category           String?
+  direction          String?
+  onboardingComplete Boolean     @default(false)
+
+  // App metadata
+  role               Role        @default(USER)
+
+  // Timestamps
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  deletedAt          DateTime?   // Soft delete
+
+  @@index([clerkId])
+  @@index([email])
+}
+
+enum Role {
+  ADMIN
+  USER
+}
