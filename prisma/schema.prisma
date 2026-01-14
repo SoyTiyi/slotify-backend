@@ -25,7 +25,7 @@ model User {
   // Onboarding data (migrado de Clerk metadata)
   companyName        String?
   category           String?
-  direction          String?
+  address          String?
   onboardingComplete Boolean     @default(false)
 
   // App metadata
