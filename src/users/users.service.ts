@@ -82,4 +82,13 @@ export class UsersService {
       },
     });
   }
+
+  async softDeleteFromWebhook(clerkId: string) {
+    return this.prisma.user.update({
+      where: { clerkId },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
+  }
 }
