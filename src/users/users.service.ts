@@ -65,4 +65,21 @@ export class UsersService {
       where: { clerkId: data.clerkId },
     });
   }
+
+  async updateFromWebhook(clerkId: string, data: {
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    imageUrl?: string;
+  }) {
+    return this.prisma.user.update({
+      where: { clerkId },
+      data: {
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        imageUrl: data.imageUrl,
+      },
+    });
+  }
 }
