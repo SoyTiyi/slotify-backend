@@ -44,10 +44,6 @@ export class WebhooksService {
 
     if (eventType === 'user.created') {
       await this.createUserFromWebhook(evt);
-    } else if (eventType === 'user.updated') {
-      await this.updateUserFromWebhook(evt);
-    } else if (eventType === 'user.deleted') {
-      await this.deleteUserFromWebhook(evt);
     }
   }
 
