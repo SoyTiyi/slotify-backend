@@ -1,11 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { OnboardingDto } from './dto/onboarding.dto';
-import { clerkClient } from 'src/clerk/clerk-client';
+import { ClerkService } from 'src/clerk/clerk.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private clerkService: ClerkService,
+  ) {}
 
   async findByClerkId(clerkId: string) {
     const user = await this.prisma.user.findUnique({
@@ -30,7 +33,7 @@ export class UsersService {
       },
     });
 
-    await clerkClient.users.updateUser(clerkId, {
+    await this.clerkService.users.updateUser(clerkId, {
       publicMetadata: {
         onboardingComplete: true,
       },
