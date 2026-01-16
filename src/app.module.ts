@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
@@ -6,7 +7,15 @@ import { UsersModule } from './users/users.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
 
 @Module({
-  imports: [PrismaModule, UsersModule, WebhooksModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    PrismaModule,
+    UsersModule,
+    WebhooksModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

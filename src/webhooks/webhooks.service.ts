@@ -3,11 +3,11 @@ import { UsersService } from '../users/users.service';
 import { WebhookEvent } from '@clerk/backend';
 import { Request } from 'express';
 import { Webhook } from 'svix';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class WebhooksService {
-  constructor(private usersService: UsersService) {}
-
+  constructor(private usersService: UsersService, private configService: ConfigService) {}
   async processEvent(
     svixId: string,
     svixTimestamp: string,
@@ -24,7 +24,8 @@ export class WebhooksService {
       throw new BadRequestException('Missing request body');
     }
 
-    const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET || '');
+    const webhookSecret = this.configService.get<string>('CLERK_WEBHOOK_SECRET') || '';
+    const wh = new Webhook(webhookSecret);
     let evt: WebhookEvent;
 
     try {

@@ -20,11 +20,14 @@ async function bootstrap() {
     }),
   );
 
-  app.use(
-    clerkMiddleware({
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/webhooks')) {
+      return next(); 
+    }
+    return clerkMiddleware({
       authorizedParties: ['http://localhost:3000'],
-    }),
-  );
+    })(req, res, next);
+  });
 
   const port = process.env.PORT || 3001;
   await app.listen(port);
